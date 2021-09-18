@@ -1,0 +1,41 @@
+{
+  "name": "prf_appto_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/www",
+  "scripts": {
+    "test": "npm t",
+    "start": "node ./bin/www",
+    "server": "nodemon -r dotenv/config ./bin/www",
+    "lint": "eslint --fix --ext .js,.jsx ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnnigPanossian/prf_appto_backend.git"
+  },
+  "author": "AppTo Technologies",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OnnigPanossian/prf_appto_backend/issues"
+  },
+  "homepage": "https://github.com/OnnigPanossian/prf_appto_backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "~1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-errors": "~1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.6",
+    "mongoose-beautiful-unique-validation": "^7.1.1",
+    "morgan": "~1.10.0",
+    "validator": "^13.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12"
+  }
+}
