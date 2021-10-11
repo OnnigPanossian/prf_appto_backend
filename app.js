@@ -30,8 +30,13 @@ app.use(express.json({
   },
 }));
 
+<<<<<<< HEAD
 app.get('/ping', (req, res) => res.json("pong"))
 app.use('/api/v1', routes)
+=======
+app.use('/api/v1', usersRouter);
+app.use('/api/v1', vehiclesRouter);
+>>>>>>> 62faa22e6d79d96e6c44de6732c6009a5994de09
 
 app.get('*', (req, res) => {
   res.status(404).json({
