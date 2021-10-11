@@ -5,12 +5,12 @@ const auth = require('../middlewares/auth');
 const vehicleController = require('../controllers/vehicles');
 
 // CREAR VEHICULO
-router.post('/vehicles', vehicleController.createVehicle);
+router.post('/', vehicleController.createVehicle);
 // ALL VEHICULES
-router.get('/vehicles', vehicleController.getVehicles);
+router.get('/', vehicleController.getVehicles);
 // GET VEHICLE BY ID
-router.get('/vehicles/:id', auth, vehicleController.getVehicle);
+router.get('/:id', auth, vehicleController.getVehicle);
 // UPDATE VEHICLE
-router.put('/vehicles/:id', vehicleController.updateVehicle);
+router.put('/:id', vehicleController.updateVehicle);
 
 module.exports = router;
