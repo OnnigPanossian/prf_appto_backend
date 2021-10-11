@@ -48,6 +48,8 @@ const userSchema = new Schema({
   token: {
     type: String,
   },
+  license: {
+  },
   admin: {
     type: Boolean,
     default: false,
