@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+const User = require('../models/user');
 
 const auth = async (req, res, next) => {
   try {
@@ -23,8 +23,7 @@ const auth = async (req, res, next) => {
     req.user = user; // de ésta manera obtengo al usuario después de ejecutar el middleware
     next();
   } catch (error) {
-    // return res.status(401).json({ error: 'Please authenticate' });
-    next(error);
+    res.status(401).json({ error: 'Please authenticate' });
   }
 };
 

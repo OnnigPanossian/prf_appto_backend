@@ -10,12 +10,10 @@ async function dbConnect() {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
     });
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.error('Error while connecting to the database');
+    console.error('Error while connecting to the database', e);
   }
 }
 

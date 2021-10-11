@@ -1,4 +1,4 @@
-const User = require('../models/users');
+const User = require('../models/user');
 
 const userController = {
 
@@ -8,9 +8,9 @@ const userController = {
       return res.status(400).json({ success: false, code: 400, message: 'Error creating User' });
     }
     try {
-      const token = await user.generateToken();
+      await user.generateToken();
       return res.status(201).json({
-        success: true, message: 'User created successfully', user, token,
+        success: true, message: 'User created successfully', user,
       });
     } catch (error) {
       return res.status(400).json({
@@ -21,8 +21,8 @@ const userController = {
   login: async (req, res) => {
     try {
       const user = await User.findByCredentials(req.body.email, req.body.password);
-      const token = await user.generateToken();
-      res.status(200).json({ user, token });
+      await user.generateToken();
+      res.status(200).json({ user });
     } catch (e) {
       res.status(401).json(e);
     }
@@ -43,7 +43,7 @@ const userController = {
   deleteAuthUser: async (req, res) => {
     try {
       await req.user.remove();
-      res.json(req.user);
+      res.send();
     } catch (e) {
       res.status(401).json(e);
     }
