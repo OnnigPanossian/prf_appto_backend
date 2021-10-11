@@ -48,6 +48,10 @@ const userSchema = new Schema({
   token: {
     type: String,
   },
+  license: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'License',
+  },
   admin: {
     type: Boolean,
     default: false,
@@ -58,7 +62,7 @@ const userSchema = new Schema({
 
 userSchema.plugin(beautifyUnique);
 
-userSchema.methods.toJSON = function () {
+userSchema.methods.toJSON = function toJson() {
   // modelamos la respuesta de los datos del usuario
   const user = this;
   const userObject = user.toObject();
@@ -69,7 +73,7 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-userSchema.methods.generateToken = async function () {
+userSchema.methods.generateToken = async function generateToken() {
   // Metodo del usuario que genera el token y se lo guarda en la BD
   const user = this;
   user.token = jwt.sign({ id: user._id.toString() }, process.env.JWT_SECRET);
@@ -94,7 +98,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function preSave(next) {
   // .pre() toma como parametro una accion
   // en esta caso es save
   // antes de guardar al usuario, va a hashear la pass
