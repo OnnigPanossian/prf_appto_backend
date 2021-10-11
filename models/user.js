@@ -49,6 +49,8 @@ const userSchema = new Schema({
     type: String,
   },
   license: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'License',
   },
   admin: {
     type: Boolean,

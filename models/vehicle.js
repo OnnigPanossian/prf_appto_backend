@@ -37,10 +37,16 @@ const vehicleSchema = new Schema({
     required: true,
   },
   category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
   },
   parking: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Parking',
   },
   engine: {
+    type: String,
   },
   rating: {
     type: Number,

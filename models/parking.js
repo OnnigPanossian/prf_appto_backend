@@ -25,6 +25,10 @@ const parkingSchema = new Schema({
     type: String,
     required: true,
   },
+  vehicles: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicle',
+  }],
 }, {
   timestamps: true,
 });

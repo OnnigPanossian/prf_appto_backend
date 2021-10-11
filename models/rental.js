@@ -6,8 +6,12 @@ const { Schema } = mongoose;
 
 const rentalSchema = new Schema({
   vehicle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicle',
   },
   user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   withdrawalDate: {
     type: Date,
