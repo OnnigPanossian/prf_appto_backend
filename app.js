@@ -11,8 +11,6 @@ const app = express();
 
 dbConnect();
 
-const PORT = process.env.PORT ?? 5000
-
 app.use(cors());
 app.use(compression());
 app.use(logger('dev'));
