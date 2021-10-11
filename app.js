@@ -19,10 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/**
-* json() ->  parsea body a JSON y ademas
-* valida si el formato.
-*/
 app.use(express.json({
   verify: (req, res, buf) => {
     try {
