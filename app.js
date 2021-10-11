@@ -5,13 +5,13 @@ const logger = require('morgan');
 const compression = require('compression');
 const cors = require('cors');
 const dbConnect = require('./db/database');
-
-const usersRouter = require('./routes/users');
-const vehiclesRouter = require('./routes/vehicles');
+const routes = require('./routes/index')
 
 const app = express();
 
 dbConnect();
+
+const PORT = 5000
 
 app.use(cors());
 app.use(compression());
@@ -30,13 +30,15 @@ app.use(express.json({
   },
 }));
 
-app.use('/api/v1', usersRouter);
-app.use('/api/v1', vehiclesRouter);
+app.get('/ping', (req, res) => res.json("pong"))
+app.use('/api/v1', routes)
 
 app.get('*', (req, res) => {
   res.status(404).json({
     error: 'Route Not Found',
   });
 });
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
