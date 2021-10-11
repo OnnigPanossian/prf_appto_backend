@@ -7,6 +7,7 @@ const cors = require('cors');
 const dbConnect = require('./db/database');
 
 const usersRouter = require('./routes/users');
+const vehiclesRouter = require('./routes/vehicles');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(express.json({
 }));
 
 app.use('/api/v1', usersRouter);
+app.use('/api/v1', vehiclesRouter);
 
 app.get('*', (req, res) => {
   res.status(404).json({
