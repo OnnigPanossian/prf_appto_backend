@@ -9,26 +9,20 @@ const VehicleController = {
     }
     try {
       await vehicle.save();
-      return res.status(201).json({
-        message: 'Vehicle created successfully', vehicle,
-      });
+      return res.status(201).json(vehicle);
     } catch (error) {
-      return res.status(400).json({
-        message: error.message, error: error.errors,
-      });
+      return res.status(400).json({ message: error.message, error: error.errors });
     }
   },
-  getVehicles: async (req, res) => {
+  getVehicles: async (_req, res) => {
     try {
       const vehicles = await Vehicle.find();
       if (!vehicles.length) {
         return res.status(404).json({ message: 'Vehicles Not Found' });
       }
-      return res.json({ message: 'Vehicles obtained successfully', vehicles });
+      return res.json(vehicles);
     } catch (error) {
-      return res.status(400).json({
-        message: error.message, error: error.errors,
-      });
+      return res.status(400).json({ message: error.message, error: error.errors });
     }
   },
   getVehicle: async (req, res) => {
@@ -39,18 +33,16 @@ const VehicleController = {
       if (!vehicle) {
         return res.status(404).json({ message: 'Vehicle Not Found' });
       }
-      return res.json({ message: 'Vehicle obtained successfully', vehicle });
+      return res.json(vehicle);
     } catch (error) {
-      return res.status(400).json({
-        message: error.message, error: error.errors,
-      });
+      return res.status(400).json({ message: error.message, error: error.errors });
     }
   },
   updateVehicle: async (req, res) => {
     const _id = req.params.id;
     try {
-      await Vehicle.updateOne({ _id }, req.body);
-      res.json({ message: 'Vehicle updated successfully' });
+      const vehicle = await Vehicle.updateOne({ _id }, req.body);
+      res.json(vehicle);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
