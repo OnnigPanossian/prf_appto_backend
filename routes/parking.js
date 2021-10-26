@@ -2,7 +2,7 @@
  * Dependencies
  */
 const express = require('express');
-const parkingController = require('../controllers/parking');
+const parkingController = require('../controllers/parking')
 
 /**
  * Express instance
