@@ -14,13 +14,8 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error('Please enter a name');
-      }
-    },
   },
   password: {
     type: String,
