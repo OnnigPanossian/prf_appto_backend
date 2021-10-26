@@ -10,6 +10,6 @@ module.exports = {
   },
   rules: {
     'linebreak-style': 0,
-    'implicit-arrow-linebreak': ['beside'],
+    'implicit-arrow-linebreak': [1],
   },
 };
