@@ -23,6 +23,6 @@ const rentalSchema = new Schema({
 
 rentalSchema.plugin(beautifyUnique);
 
-const Rental = mongoose.model('Vehicle', rentalSchema);
+const Rental = mongoose.model('Rental', rentalSchema);
 
 module.exports = Rental;

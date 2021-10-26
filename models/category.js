@@ -44,6 +44,6 @@ const categorySchema = new Schema({
 
 categorySchema.plugin(beautifyUnique);
 
-const Category = mongoose.model('Vehicle', categorySchema);
+const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;
