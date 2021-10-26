@@ -17,6 +17,6 @@ const licenseSchema = new Schema({
 
 licenseSchema.plugin(beautifyUnique);
 
-const License = mongoose.model('Vehicle', licenseSchema);
+const License = mongoose.model('License', licenseSchema);
 
 module.exports = License;

@@ -35,6 +35,6 @@ const parkingSchema = new Schema({
 
 parkingSchema.plugin(beautifyUnique);
 
-const Parking = mongoose.model('Vehicle', parkingSchema);
+const Parking = mongoose.model('Parking', parkingSchema);
 
 module.exports = Parking;
