@@ -1,4 +1,5 @@
 const Vehicle = require('../models/vehicle');
+const Rental = require('../models/rental')
 
 const VehicleController = {
 
@@ -49,12 +50,24 @@ const VehicleController = {
   },
 
   bookVehicle: async (req, res) => {
-    const _id = req.params.id;
+    const _id = req.params.id
     try {
-      const vehicle = await Vehicle.findById(_id);
+      const vehicle = await Vehicle.findById(_id)
+
       if (!vehicle) {
-        return res.status(404).json({ message: 'Vehicle Not Found' });
+        return res.status(404).json({ message: 'Vehicle Not Found' })
       }
+
+      const rental = new Rental({
+        vehicle,
+        user: req.user,
+        withdrawalDate: Date.now(),
+        returnDate: null
+      })
+      await rental.save()
+
+      vehicle.parking = null
+      await vehicle.save()
     } catch (e) {
 
     }
