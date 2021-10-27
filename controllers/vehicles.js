@@ -47,6 +47,18 @@ const VehicleController = {
       res.status(400).json({ message: error.message });
     }
   },
+
+  bookVehicle: async (req, res) => {
+    const _id = req.params.id;
+    try {
+      const vehicle = await Vehicle.findById(_id);
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle Not Found' });
+      }
+    } catch (e) {
+
+    }
+  },
 };
 
 module.exports = VehicleController;
