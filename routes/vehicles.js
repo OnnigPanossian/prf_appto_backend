@@ -12,5 +12,5 @@ router.get('/:id', vehicleController.getVehicle);
 // UPDATE VEHICLE
 router.put('/:id', vehicleController.updateVehicle);
 // BOOK VEHICLE
-router.put('/:id/book', vehicleController.bookVehicle);
+router.post('/:id/book', vehicleController.bookVehicle);
 module.exports = router;
