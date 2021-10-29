@@ -1,5 +1,6 @@
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
+const Parking = require('../models/parking');
 
 const VehicleController = {
 
@@ -68,7 +69,31 @@ const VehicleController = {
 
       vehicle.parking = null;
       await vehicle.save();
-      res.json({ message: "Book OK" });
+      res.json({ message: 'Book OK' });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  },
+  returnVehicle: async (req, res) => {
+    const _id = req.params.id;
+    try {
+      const vehicle = await Vehicle.findById(_id);
+
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle Not Found' });
+      }
+
+      const parking = await Parking.findById(req.params.parking);
+
+      if (!parking) {
+        return res.status(400).json({ message: 'Parking Not Found' });
+      }
+
+      await Rental.updateOne({ vehicle, returnDate: null }, { returnDate: Date.now });
+      vehicle.parking = parking;
+      await vehicle.save();
+
+      res.json({ message: 'Return OK' });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
