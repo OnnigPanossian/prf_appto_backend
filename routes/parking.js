@@ -13,6 +13,7 @@ const router = express.Router();
  * Routes
  */
 router.get('/', parkingController.getAll);
+router.post('/', parkingController.createParking);
 
 /**
  * Expose routes
