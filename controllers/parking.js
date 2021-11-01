@@ -30,7 +30,7 @@ const getParking = async (req, res) => {
   try {
     const parking = await Parking.findById(id);
     if (!parking) {
-      return res.status(404).json({ message: 'Vehicle Not Found' });
+      return res.status(404).json({ message: 'Garage Not Found' });
     }
     return res.json(parking);
   } catch (error) {
