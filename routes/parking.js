@@ -12,6 +12,7 @@ const router = express.Router();
 /**
  * Routes
  */
+router.get('/:id', parkingController.getParking);
 router.get('/', parkingController.getAll);
 router.post('/', parkingController.createParking);
 
