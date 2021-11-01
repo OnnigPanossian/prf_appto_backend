@@ -24,7 +24,22 @@ const createParking = async (req, res) => {
   }
 };
 
+const getParking = async (req, res) => {
+  const { params: { id } } = req;
+
+  try {
+    const parking = await Parking.findById(id);
+    if (!parking) {
+      return res.status(404).json({ message: 'Garage Not Found' });
+    }
+    return res.json(parking);
+  } catch (error) {
+    return res.status(400).json({ message: error.message, error: error.errors });
+  }
+};
+
 module.exports = {
   getAll,
   createParking,
+  getParking,
 };
