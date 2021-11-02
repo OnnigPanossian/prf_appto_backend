@@ -16,7 +16,22 @@ const getAll = async (req, res) =>
     })
     .catch((error) => res.status(400).json({ message: error.message, error: error.errors }));
 
-const getCategory = async () => {};
+const getCategory = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  try {
+    const category = await Category.findById(id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category Not Found' });
+    }
+    return res.json(category);
+  } catch (error) {
+    return res.status(400).json({ message: error.message, error: error.errors });
+  }
+};
+
 const createCategory = async () => {};
 
 module.exports = {
