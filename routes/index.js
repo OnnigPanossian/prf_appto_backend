@@ -21,7 +21,6 @@ router.use(auth);
 router.use('/vehicles', vehiclesRouter);
 router.use('/parking', parkingRouter);
 router.use('/category', categoryRouter);
-router.use('/license', categoryRouter);
 
 /**
  * Expose router
