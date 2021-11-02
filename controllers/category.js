@@ -32,7 +32,16 @@ const getCategory = async (req, res) => {
   }
 };
 
-const createCategory = async () => {};
+const createCategory = async (req, res) => {
+  const { body } = req;
+  const category = new Category(body);
+  try {
+    await category.save();
+    return res.status(201).json(category);
+  } catch (error) {
+    return res.status(400).json({ message: error.message, error: error.errors });
+  }
+};
 
 module.exports = {
   getAll,
