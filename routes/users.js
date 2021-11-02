@@ -16,8 +16,12 @@ const router = express.Router();
 router.post('/', userController.createUser);
 router.post('/login', userController.login);
 router.post('/logout', auth, userController.logout);
-router.get('/me', auth, userController.getUser);
-router.delete('/me', auth, userController.deleteAuthUser);
+
+router.use(auth);
+
+router.get('/me', userController.getUser);
+router.delete('/me', userController.deleteAuthUser);
+router.post('/license', userController.addLicense);
 
 /**
  * Expose routes
