@@ -5,6 +5,7 @@ const express = require('express');
 const usersRouter = require('./users');
 const vehiclesRouter = require('./vehicles');
 const parkingRouter = require('./parking');
+const categoryRouter = require('./category');
 const auth = require('../middlewares/auth');
 
 /**
@@ -19,6 +20,7 @@ router.use('/users', usersRouter);
 router.use(auth);
 router.use('/vehicles', vehiclesRouter);
 router.use('/parking', parkingRouter);
+router.use('/category', categoryRouter);
 
 /**
  * Expose router
