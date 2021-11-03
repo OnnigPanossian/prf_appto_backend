@@ -22,6 +22,7 @@ router.use(auth);
 router.get('/me', userController.getUser);
 router.delete('/me', userController.deleteAuthUser);
 router.post('/license', userController.addLicense);
+router.patch('/:id', userController.updateUser);
 
 /**
  * Expose routes
