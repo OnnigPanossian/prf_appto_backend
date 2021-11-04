@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
@@ -44,10 +45,11 @@ const userSchema = new Schema(
     token: {
       type: String,
     },
+    // La licencia no es requerida en el registro segun se determino en el modelo de negocio
     license: {
       expireDate: {
         type: Date,
-        required: true,
+        required: false,
         validate(value) {
           if (Date.parse(value) - Date.parse(new Date()) < 0) {
             throw new Error('Expired license');
@@ -56,7 +58,7 @@ const userSchema = new Schema(
       },
       number: {
         type: String,
-        required: true,
+        required: false,
       },
     },
     admin: {
@@ -66,7 +68,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 userSchema.plugin(beautifyUnique);
