@@ -13,6 +13,15 @@ const userController = {
       return res.status(400).json({ message: error.message, error: error.errors });
     }
   },
+  updateUser: async (req, res) => {
+    const _id = req.params.id;
+    try {
+      const user = await User.updateOne({ _id }, req.body);
+      res.json(user);
+    } catch (error) {
+      res.status(400).json({ message: error.message, error: error.errors });
+    }
+  },
   login: async (req, res) => {
     try {
       const user = await User.findByCredentials(req.body.email, req.body.password);
