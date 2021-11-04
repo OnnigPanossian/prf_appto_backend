@@ -19,6 +19,13 @@ const VehicleController = {
   getVehicles: async (_req, res) => {
     try {
       const vehicles = await Vehicle.find();
+
+      if (_req.query.length) {
+        for (const key in _req.query) {
+          vehicles.where(key, _req.query[key]);
+        }
+      }
+
       if (!vehicles.length) {
         return res.status(404).json({ message: 'Vehicles Not Found' });
       }
