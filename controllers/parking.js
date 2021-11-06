@@ -45,6 +45,7 @@ const getVehiclesByParkingId = async (req, res) => {
     if (!parking) {
       return res.status(404).json({ message: 'Garage Not Found' });
     }
+    
     const populateParking = await parking.populate({ path: 'vehicles', model: 'Vehicle' });
     return res.status(200).json(populateParking.vehicles);
   } catch (e) {
