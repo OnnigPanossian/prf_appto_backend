@@ -15,6 +15,7 @@ const router = express.Router();
 router.get('/:id', parkingController.getParking);
 router.get('/', parkingController.getAll);
 router.post('/', parkingController.createParking);
+router.get('/:id/vehicles', parkingController.getVehiclesByParkingId);
 
 /**
  * Expose routes
