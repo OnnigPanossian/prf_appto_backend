@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Rental = require('../models/rental');
 
 const userController = {
   createUser: async (req, res) => {
@@ -60,6 +61,19 @@ const userController = {
       res.json(user);
     } catch (error) {
       return res.status(400).json({ message: error.message, error: error.errors });
+    }
+  },
+  async getRentals(req, res) {
+    const { user } = req;
+    try {
+      const rentals = await Rental.find({ user });
+      res.json(rentals)
+    } catch (error) {
+      return res.status(500)
+        .json({
+          message: error.message,
+          error: error.errors,
+        });
     }
   },
 };
