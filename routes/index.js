@@ -17,10 +17,10 @@ const router = express.Router();
  * Routes
  */
 router.use('/users', usersRouter);
-router.use(auth);
 router.use('/vehicles', vehiclesRouter);
 router.use('/parking', parkingRouter);
 router.use('/category', categoryRouter);
+router.use(auth);
 
 /**
  * Expose router

@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
@@ -11,49 +12,64 @@ const beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  password: {
-    type: String,
-    minlength: 6,
-    trim: true,
-    required: [true, 'Password is required'],
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: 'Email already in use ({VALUE})',
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Email is not valid');
-      }
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    password: {
+      type: String,
+      minlength: 6,
+      trim: true,
+      required: [true, 'Password is required'],
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: 'Email already in use ({VALUE})',
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Email is not valid');
+        }
+      },
+    },
+    image: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    token: {
+      type: String,
+    },
+    // La licencia no es requerida en el registro segun se determino en el modelo de negocio
+    license: {
+      expireDate: {
+        type: Date,
+        required: false,
+        validate(value) {
+          if (Date.parse(value) - Date.parse(new Date()) < 0) {
+            throw new Error('Expired license');
+          }
+        },
+      },
+      number: {
+        type: String,
+        required: false,
+      },
+    },
+    admin: {
+      type: Boolean,
+      default: false,
     },
   },
-  image: {
-    type: String,
-  },
-  dateOfBirth: {
-    type: Date,
-  },
-  token: {
-    type: String,
-  },
-  license: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'License',
-  },
-  admin: {
-    type: Boolean,
-    default: false,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 userSchema.plugin(beautifyUnique);
 

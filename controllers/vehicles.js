@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-underscore-dangle */
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
 const Parking = require('../models/parking');
 
 const VehicleController = {
-
   createVehicle: async (req, res) => {
     const vehicle = new Vehicle(req.body);
     if (!vehicle) {
@@ -81,6 +82,7 @@ const VehicleController = {
       res.status(500).json({ message: e.message });
     }
   },
+
   returnVehicle: async (req, res) => {
     const _id = req.params.id;
     try {
@@ -101,6 +103,36 @@ const VehicleController = {
       await vehicle.save();
 
       res.json({ message: 'Return OK' });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  },
+  calificateVehicule: async (req, res) => {
+    const _id = req.params.id;
+    const { rating } = req.body;
+    try {
+      const vehicle = await Vehicle.findById(_id);
+
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle Not Found' });
+      }
+      if (rating || !Number.isNaN(rating)) {
+        let finalRating;
+        if (vehicle.timesRated > 0) {
+          vehicle.timesRated += 1;
+          finalRating = (vehicle.rating + rating) / vehicle.timesRated;
+        } else {
+          vehicle.timesRated = 1;
+          finalRating = rating;
+        }
+
+        vehicle.rating = finalRating.toFixed(2);
+        await vehicle.save();
+
+        res.status(200).json({ message: 'OK' });
+      } else {
+        return res.status(400).json({ message: 'Must send a valid rating to set' });
+      }
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
