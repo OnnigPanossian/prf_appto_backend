@@ -16,6 +16,8 @@ router.get('/:id', parkingController.getParking);
 router.get('/', parkingController.getAll);
 router.post('/', parkingController.createParking);
 router.get('/:id/vehicles', parkingController.getVehiclesByParkingId);
+router.post('/:id/vehicle/:idVehicle', parkingController.addVehicle);
+router.delete('/:id/vehicle/:idVehicle', parkingController.deleteVehicle);
 
 /**
  * Expose routes
