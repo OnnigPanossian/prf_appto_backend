@@ -14,7 +14,7 @@ router.put('/:id', vehicleController.updateVehicle);
 // BOOK VEHICLE
 router.post('/:id/book', vehicleController.bookVehicle);
 // RETURN VEHICLE
-router.post('/:id/return', vehicleController.returnVehicle);
+router.post('/:id/return/:parking', vehicleController.returnVehicle);
 // CALIFICATION VEHICLE
 router.put('/:id/calificate', vehicleController.calificateVehicule);
 
