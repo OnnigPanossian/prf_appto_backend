@@ -37,7 +37,7 @@ const userController = {
       delete req.user.token;
       await req.user.save();
       res.json();
-    } catch {
+    } catch (_error) {
       res.status(500).json();
     }
   },
@@ -90,15 +90,3 @@ const userController = {
 };
 
 module.exports = userController;
-
-// {
-//   _id: new ObjectId("61775bf4daeac09a086d06bb"),
-//   password: '$2b$08$C85EUiLjXKGnQ.gQXufvledfDFSY063iPoq8ZO6d3rwOOZUGt3dxe',
-//   email: 'laucharobles2000@gmail.com',
-//   admin: true,
-//   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzc1YmY0ZGFlYWMwOWEwODZkMDZiYiIsImlhdCI6MTYzNTIxMjI3Nn0.eLrrMU-QAd9v733T7mRw6o3ofyWths8xgD_KLzJs31U',
-//   createdAt: 2021-10-26T01:37:56.508Z,
-//   updatedAt: 2021-11-03T23:06:06.044Z,
-//   __v: 0,
-//   name: 'Laucha'
-// }
