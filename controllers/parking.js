@@ -92,7 +92,7 @@ const deleteVehicle = async (req, res) => {
   } = req;
 
   try {
-    let parking = await Parking.findById(id);
+    const parking = await Parking.findById(id);
     if (!parking) {
       return res.status(404).json({ message: 'Garage Not Found' });
     }
