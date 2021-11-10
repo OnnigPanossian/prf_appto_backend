@@ -43,7 +43,6 @@ const vehicleSchema = new Schema({
   parking: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Parking',
-    required: true,
   },
   engine: {
     type: String,
