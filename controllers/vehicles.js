@@ -105,6 +105,9 @@ const VehicleController = {
       vehicle.parking = parking;
       await vehicle.save();
 
+      parking.vehicles.push(vehicle);
+      await parking.save();
+
       res.json({ message: 'Return OK' });
     } catch (e) {
       res.status(500).json({ message: e.message });
