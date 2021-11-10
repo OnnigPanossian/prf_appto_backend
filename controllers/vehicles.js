@@ -22,9 +22,11 @@ const VehicleController = {
     try {
       const vehicles = await Vehicle.find();
 
-      Object.keys(query).forEach((key) => {
-        vehicles.where(key).equal(query[key]);
-      });
+      if (query) {
+        Object.keys(query).forEach((key) => {
+          vehicles.where(key).equal(query[key]);
+        });
+      }
 
       if (!vehicles.length) {
         return res.status(404).json({ message: 'Vehicles Not Found' });
