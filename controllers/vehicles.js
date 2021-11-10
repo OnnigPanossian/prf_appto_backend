@@ -114,8 +114,9 @@ const VehicleController = {
 
       rental.finalPrice = price;
       rental.parkingDestinationId = idParking;
+      await rental.save();
 
-      await rental.updateOne();
+      // await rental.updateOne();
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
