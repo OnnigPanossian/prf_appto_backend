@@ -3,8 +3,6 @@
 /* eslint-disable no-underscore-dangle */
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
-const Parking = require('../models/parking');
-const { find } = require('../models/parking');
 
 const VehicleController = {
   createVehicle: async (req, res) => {
@@ -19,15 +17,14 @@ const VehicleController = {
       return res.status(400).json({ message: error.message, error: error.errors });
     }
   },
-  getVehicles: async (_req, res) => {
+  getVehicles: async (req, res) => {
+    const { query } = req;
     try {
       const vehicles = await Vehicle.find();
 
-      if (_req.query.length) {
-        for (const key in _req.query) {
-          vehicles.where(key, _req.query[key]);
-        }
-      }
+      Object.keys(query).forEach((key) => {
+        vehicles.where(key).equal(query[key]);
+      });
 
       if (!vehicles.length) {
         return res.status(404).json({ message: 'Vehicles Not Found' });
@@ -61,7 +58,10 @@ const VehicleController = {
   },
 
   bookVehicle: async (req, res) => {
-    const _id = req.params.id;
+    const {
+      params: { id: _id },
+    } = req;
+
     try {
       const vehicle = await Vehicle.findById(_id);
 
@@ -87,8 +87,10 @@ const VehicleController = {
   },
 
   returnVehicle: async (req, res) => {
-    const _id = req.params.id;
-    const { destinationId } = req.body;
+    const {
+      params: { id: _id, idParking },
+    } = req;
+
     try {
       const vehicle = await Vehicle.findById(_id);
 
@@ -103,45 +105,19 @@ const VehicleController = {
 
       const today = new Date(rental.withdrawalData);
       const endDate = new Date();
-      const minutes = parseInt((Math.abs(endDate.getTime() - today.getTime()) / (1000 * 60)) % 60);
+      // eslint-disable-next-line max-len
+      const minutes = parseInt((Math.abs(endDate.getTime() - today.getTime()) / (1000 * 60)) % 60, 10);
 
       const price = minutes * 100;
 
-      console.log(price);
       rental.finalPrice = price;
-      rental.parkingDestinationId = destinationId;
+      rental.parkingDestinationId = idParking;
+
       await rental.updateOne();
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
-    // const _id = req.params.id;
-    // const { user } = req;
-    // try {
-    //   const vehicle = await Vehicle.findById(_id);
-
-    //   if (!vehicle) {
-    //     return res.status(404).json({ message: 'Vehicle Not Found' });
-    //   }
-
-    //   //obtener rental y date origen
-
-    //   const parking = await Parking.findById(req.params.parking);
-
-    //   if (!parking) {
-    //     return res.status(400).json({ message: 'Parking Not Found' });
-    //   }
-
-    //   await Rental.updateOne({ vehicle, returnDate: null }, { returnDate: Date.now });
-    //   vehicle.parking = parking;
-    //   await vehicle.save();
-    //   const finalPrice =
-    //   //calcular cotizacion y retornarla
-
-    //   res.json({ message: 'Return OK', price: finalPrice });
-    // } catch (e) {
-    //   res.status(500).json({ message: e.message });
-    // }
   },
   calificateVehicule: async (req, res) => {
     const _id = req.params.id;
