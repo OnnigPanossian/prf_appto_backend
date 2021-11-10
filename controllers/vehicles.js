@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
+const { ObjectId } = require('mongoose').Types;
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
 const Parking = require('../models/parking');
@@ -67,6 +68,12 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Not Found' });
       }
 
+      const parking = await Parking.findById(vehicle.parking._id);
+
+      if (!parking) {
+        return res.status(404).json({ message: 'Parking Not Found' });
+      }
+
       const rental = new Rental({
         vehicle,
         user: req.user,
@@ -75,8 +82,12 @@ const VehicleController = {
       });
       await rental.save();
 
+      parking.filter((element) => parking._id !== new ObjectId(element).toString());
+      parking.save();
+
       vehicle.parking = null;
       await vehicle.save();
+
       res.json({ message: 'Book OK' });
     } catch (e) {
       res.status(500).json({ message: e.message });
