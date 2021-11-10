@@ -98,7 +98,7 @@ const VehicleController = {
         return res.status(400).json({ message: 'Parking Not Found' });
       }
 
-      await Rental.updateOne({ vehicle, returnDate: null }, { returnDate: Date.now });
+      await Rental.updateOne({ vehicle: vehicle._id, returnDate: null }, { returnDate: Date.now });
       vehicle.parking = parking;
       await vehicle.save();
 
