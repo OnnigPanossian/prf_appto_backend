@@ -74,6 +74,7 @@ const VehicleController = {
       if (!vehicle.parking) {
         return res.status(404).json({ message: 'Vehicle In Use' });
       }
+
       const rental = new Rental({
         vehicle,
         user: req.user._id,
@@ -105,7 +106,7 @@ const VehicleController = {
       }
       const rental = await Rental.findOne({ vehicle: _id, returnDate: null });
 
-      const today = new Date(rental.withdrawalData);
+      const today = new Date(rental.withdrawalDate);
       const endDate = new Date();
       // eslint-disable-next-line max-len
       const minutes = parseInt((Math.abs(endDate.getTime() - today.getTime()) / (1000 * 60)) % 60, 10);
@@ -113,6 +114,7 @@ const VehicleController = {
       const price = minutes * 100;
 
       rental.finalPrice = price;
+      rental.returnDate = endDate;
       rental.parkingDestinationId = idParking;
       await rental.save();
 
