@@ -15,7 +15,9 @@ const userController = {
     }
   },
   updateUser: async (req, res) => {
-    const _id = req.params.id;
+    const {
+      params: { id: _id },
+    } = req;
     try {
       const user = await User.updateOne({ _id }, req.body);
       res.json(user);
@@ -37,7 +39,7 @@ const userController = {
       delete req.user.token;
       await req.user.save();
       res.json();
-    } catch {
+    } catch (_error) {
       res.status(500).json();
     }
   },
@@ -52,7 +54,7 @@ const userController = {
       res.status(401).json(e);
     }
   },
-  async addLicense(req, res) {
+  addLicense: async (req, res) => {
     const { user, body } = req;
 
     try {
@@ -60,20 +62,33 @@ const userController = {
       await user.save();
       res.json(user);
     } catch (error) {
-      return res.status(400).json({ message: error.message, error: error.errors });
+      res.status(400).json({ message: error.message, error: error.errors });
     }
   },
-  async getRentals(req, res) {
+  getRentals: async (req, res) => {
     const { user } = req;
     try {
       const rentals = await Rental.find({ user });
-      res.json(rentals)
+      res.json(rentals);
     } catch (error) {
-      return res.status(500)
-        .json({
-          message: error.message,
-          error: error.errors,
-        });
+      res.status(500).json({
+        message: error.message,
+        error: error.errors,
+      });
+    }
+  },
+  getRental: async (req, res) => {
+    const {
+      user: { _id },
+    } = req;
+    try {
+      const rental = await Rental.findOne({ user: _id, returnDate: null });
+      res.json(rental);
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+        error: error.errors,
+      });
     }
   },
 };

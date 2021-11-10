@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const vehicleController = require('../controllers/vehicles');
+const auth = require('../middlewares/auth');
 
 // CREATE VEHICLE
 router.post('/', vehicleController.createVehicle);
@@ -12,9 +13,9 @@ router.get('/:id', vehicleController.getVehicle);
 // UPDATE VEHICLE
 router.put('/:id', vehicleController.updateVehicle);
 // BOOK VEHICLE
-router.post('/:id/book', vehicleController.bookVehicle);
+router.post('/:id/book', auth, vehicleController.bookVehicle);
 // RETURN VEHICLE
-router.post('/:id/return/:parking', vehicleController.returnVehicle);
+router.post('/:id/return/:idParking', vehicleController.returnVehicle);
 // CALIFICATION VEHICLE
 router.put('/:id/calificate', vehicleController.calificateVehicule);
 

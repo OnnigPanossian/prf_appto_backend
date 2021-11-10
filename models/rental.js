@@ -8,16 +8,33 @@ const rentalSchema = new Schema({
   vehicle: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vehicle',
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   withdrawalDate: {
     type: Date,
+    required: true,
   },
   returnDate: {
     type: Date,
+  },
+  parkingOriginId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Parking',
+    required: true,
+  },
+  parkingDestinationId:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Parking',
+  },
+  finalPrice:
+  {
+    type: Number,
   },
 });
 
