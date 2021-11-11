@@ -18,7 +18,7 @@ const userController = {
     
     const { _id } = req.user
     let o = Object.keys(req.body)
-    .filter((k) => req.body[k] != null)
+    .filter((k) => req.body[k] != null || req.body[k] != '')
     .reduce((a, k) => ({ ...a, [k]: req.body[k] }), {});
     console.log(o)
    try {
