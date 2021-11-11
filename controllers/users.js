@@ -15,13 +15,18 @@ const userController = {
     }
   },
   updateUser: async (req, res) => {
+    
     const { _id } = req.user
-    try {
-      const user = await User.updateOne({ _id }, req.body);
+    let o = Object.keys(req.user)
+    .filter((k) => req.user[k] != null)
+    .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
+    console.log(o)
+   try {
+      const user = await User.updateOne({ _id }, o);
       res.json(user);
     } catch (error) {
       res.status(400).json({ message: error.message, error: error.errors });
-    }
+    } 
   },
   login: async (req, res) => {
     try {
