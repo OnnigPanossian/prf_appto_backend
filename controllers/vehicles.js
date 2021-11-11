@@ -97,7 +97,6 @@ const VehicleController = {
       vehicle.parking = null;
       await vehicle.save();
 
-      res.json({ message: 'Book OK' });
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
