@@ -15,9 +15,7 @@ const userController = {
     }
   },
   updateUser: async (req, res) => {
-    const {
-      params: { id: _id },
-    } = req;
+    const { _id } = req.user
     try {
       const user = await User.updateOne({ _id }, req.body);
       res.json(user);
