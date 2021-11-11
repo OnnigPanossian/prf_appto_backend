@@ -17,7 +17,7 @@ const userController = {
   updateUser: async (req, res) => {
     
     const { _id } = req.user
-    let o = Object.keys(req.user._doc)
+    let o = Object.keys(req.body)
     .filter((k) => req.user[k] != null)
     .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
     console.log(o)
