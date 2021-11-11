@@ -92,7 +92,7 @@ const VehicleController = {
       parking.vehicles = parking.vehicles.filter(
         (element) => _id !== new ObjectId(element).toString()
       );
-      parking.save();
+      await parking.save();
 
       vehicle.parking = null;
       await vehicle.save();
@@ -136,7 +136,7 @@ const VehicleController = {
       await rental.save();
 
       parking.vehicles.push(vehicle);
-      parking.save();
+      await parking.save();
 
       res.json({ message: rental });
     } catch (e) {
