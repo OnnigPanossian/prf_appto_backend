@@ -17,10 +17,10 @@ const userController = {
   updateUser: async (req, res) => {
     
     const { _id } = req.user
-    let o = Object.keys(req.user)
+    let o._doc = Object.keys(req.user)
     .filter((k) => req.user[k] != null)
     .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
-    console.log(o)
+    console.log(o._doc)
    try {
       const user = await User.updateOne({ _id }, o);
       res.json(user);
