@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const Rental = require('../models/rental');
-const { CLIEngine } = require('eslint');
 
 const userController = {
   createUser: async (req, res) => {
@@ -19,9 +18,9 @@ const userController = {
     
     const { _id } = req.user
     let o = Object.keys(req.user)
-  .filter((k) => req.user[k] != null)
-  .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
-  console.log(o)
+    .filter((k) => req.user[k] != null)
+    .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
+    console.log(o)
    try {
       const user = await User.updateOne({ _id }, o);
       res.json(user);
