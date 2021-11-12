@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
+const { ObjectId } = require('mongoose').Types;
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
+const Parking = require('../models/parking');
 
 const VehicleController = {
   createVehicle: async (req, res) => {
@@ -60,15 +62,18 @@ const VehicleController = {
   },
 
   bookVehicle: async (req, res) => {
-    const {
-      params: { id: _id },
-    } = req;
-
+    const _id = req.params.id;
     try {
       const vehicle = await Vehicle.findById(_id);
 
       if (!vehicle) {
         return res.status(404).json({ message: 'Vehicle Not Found' });
+      }
+
+      const parking = await Parking.findById(vehicle.parking._id);
+
+      if (!parking) {
+        return res.status(404).json({ message: 'Parking Not Found' });
       }
 
       if (!vehicle.parking) {
@@ -83,6 +88,15 @@ const VehicleController = {
         parkingOriginId: vehicle.parking,
       });
       await rental.save();
+
+      parking.vehicles = parking.vehicles.filter(
+        (element) => _id !== new ObjectId(element).toString()
+      );
+      await parking.save();
+
+      vehicle.parking = null;
+      await vehicle.save();
+
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
@@ -101,6 +115,8 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Not Found' });
       }
 
+      const parking = await Parking.findById(vehicle.parking._id);
+
       if (vehicle.parking) {
         return res.status(404).json({ message: 'Vehicle Already In A Parking' });
       }
@@ -118,7 +134,9 @@ const VehicleController = {
       rental.parkingDestinationId = idParking;
       await rental.save();
 
-      // await rental.updateOne();
+      parking.vehicles.push(vehicle);
+      await parking.save();
+
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
