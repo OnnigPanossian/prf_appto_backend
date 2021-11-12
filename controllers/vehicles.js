@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
@@ -5,6 +6,7 @@ const { ObjectId } = require('mongoose').Types;
 const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
 const Parking = require('../models/parking');
+const Category = require('../models/category');
 
 const VehicleController = {
   createVehicle: async (req, res) => {
@@ -90,7 +92,7 @@ const VehicleController = {
       await rental.save();
 
       parking.vehicles = parking.vehicles.filter(
-        (element) => _id !== new ObjectId(element).toString()
+        (element) => _id !== new ObjectId(element).toString(),
       );
       await parking.save();
 
@@ -115,7 +117,7 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Not Found' });
       }
 
-      const parking = await Parking.findById(vehicle.parking._id);
+      const parking = await Parking.findById(idParking);
 
       if (vehicle.parking) {
         return res.status(404).json({ message: 'Vehicle Already In A Parking' });
@@ -124,10 +126,24 @@ const VehicleController = {
 
       const today = new Date(rental.withdrawalDate);
       const endDate = new Date();
-      // eslint-disable-next-line max-len
       const minutes = parseInt((Math.abs(endDate.getTime() - today.getTime()) / (1000 * 60)) % 60, 10);
 
-      const price = minutes * 100;
+      if (!vehicle.category) {
+        return res.status(404).json({ message: 'Vehicle without category, set a category to vehicle and try again' });
+      }
+
+      const category = await Category.findById(vehicle.category);
+
+      if (!category) {
+        return res.status(404).json({ message: 'No category found' });
+      }
+
+      if (vehicle.parking) {
+        return res.status(404).json({ message: 'Vehicle Already In A Parking' });
+      }
+
+      const cost = category.costPerMinute;
+      const price = minutes * Number(cost);
 
       rental.finalPrice = price;
       rental.returnDate = endDate;
@@ -136,7 +152,8 @@ const VehicleController = {
 
       parking.vehicles.push(vehicle);
       await parking.save();
-
+      vehicle.parking = idParking;
+      await vehicle.save();
       res.json({ message: rental });
     } catch (e) {
       res.status(500).json({ message: e.message });
