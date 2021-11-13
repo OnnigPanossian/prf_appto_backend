@@ -16,9 +16,10 @@ const userController = {
   },
   updateUser: async (req, res) => {
     const { _id } = req.user;
-    const o = Object.keys(req.user)
-      .filter((k) => req.user[k] != null)
-      .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
+    let o = Object.keys(req.body)
+      .filter((k) => req.body[k] !== null && req.body[k] !== '' && req.body[k] !== undefined)
+      .reduce((a, k) => ({ ...a, [k]: req.body[k] }), {});
+    console.log(o);
     try {
       const user = await User.updateOne({ _id }, o);
       res.json(user);
