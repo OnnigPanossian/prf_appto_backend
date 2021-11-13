@@ -25,7 +25,6 @@ const rentalSchema = new Schema({
   parkingOrigin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Parking',
-    required: true,
   },
   parkingDestination:
   {

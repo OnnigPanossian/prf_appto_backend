@@ -152,6 +152,8 @@ const VehicleController = {
 
       parking.vehicles.push(vehicle);
       await parking.save();
+      vehicle.parking = idParking;
+      await vehicle.save();
 
       res.json(rental);
     } catch (e) {
