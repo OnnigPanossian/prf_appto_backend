@@ -17,6 +17,6 @@ router.post('/:id/book', auth, vehicleController.bookVehicle);
 // RETURN VEHICLE
 router.post('/:id/return/:idParking', vehicleController.returnVehicle);
 // CALIFICATION VEHICLE
-router.put('/:id/calificate', vehicleController.calificateVehicule);
+router.put('/:id/calificate/:rating', vehicleController.calificateVehicule);
 
 module.exports = router;

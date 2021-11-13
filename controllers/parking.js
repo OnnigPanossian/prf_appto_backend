@@ -4,15 +4,14 @@
 const Parking = require('../models/parking');
 const Vehicle = require('../models/vehicle');
 
-const getAll = async (_, res) =>
-  Parking.find()
-    .then((garages) => {
-      if (!garages.length) {
-        return res.status(404).json({ message: 'Garages Not Found' });
-      }
-      return res.status(200).json(garages);
-    })
-    .catch((error) => res.status(400).json({ message: error.message, error: error.errors }));
+const getAll = async (_, res) => Parking.find()
+  .then((garages) => {
+    if (!garages.length) {
+      return res.status(404).json({ message: 'Garages Not Found' });
+    }
+    return res.status(200).json(garages);
+  })
+  .catch((error) => res.status(400).json({ message: error.message, error: error.errors }));
 
 const createParking = async (req, res) => {
   const { body } = req;
@@ -52,7 +51,8 @@ const getVehiclesByParkingId = async (req, res) => {
       return res.status(404).json({ message: 'Garage Not Found' });
     }
 
-    const populateParking = await parking.populate({ path: 'vehicles', model: 'Vehicle' });
+    const populateParking = await parking.populate({ path: 'vehicles', populate: { path: 'category', model: 'Category' } });
+
     return res.status(200).json(populateParking.vehicles);
   } catch (e) {
     return res.status(400).send(e);
