@@ -1,9 +1,9 @@
-const { response } = require('express');
+/* eslint-disable no-param-reassign */
 const User = require('../models/user');
 const Rental = require('../models/rental');
 
 const userController = {
-  createUser: async (req, res) => {
+  async createUser(req, res) {
     const user = new User(req.body);
     if (!user) {
       return res.status(400).json({ message: 'Error creating User' });
@@ -11,11 +11,11 @@ const userController = {
     try {
       await user.generateToken();
       return res.status(201).json(user);
-    } catch (error) {
-      return res.status(400).json({ message: error.message, error: error.errors });
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
     }
   },
-  updateUser: async (req, res) => {
+  async updateUser(req, res) {
     const { _id } = req.user;
     const o = Object.keys(req.body)
       .filter((k) => req.body[k] !== null && req.body[k] !== '' && req.body[k] !== undefined)
@@ -23,11 +23,11 @@ const userController = {
     try {
       const user = await User.findOneAndUpdate({ _id }, o, { new: true });
       res.json(user);
-    } catch (error) {
-      res.status(400).json({ message: error.message, error: error.errors });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
     }
   },
-  login: async (req, res) => {
+  async login(req, res) {
     try {
       const user = await User.findByCredentials(req.body.email, req.body.password);
       await user.generateToken();
@@ -36,19 +36,19 @@ const userController = {
       res.status(401).json(e);
     }
   },
-  logout: async (req, res) => {
+  async logout(req, res) {
     try {
       delete req.user.token;
       await req.user.save();
       res.json();
-    } catch (_error) {
+    } catch (_err) {
       res.status(500).json();
     }
   },
-  getUser: (req, res) => {
+  async getUser(req, res) {
     res.json(req.user);
   },
-  deleteAuthUser: async (req, res) => {
+  async deleteAuthUser(req, res) {
     try {
       await req.user.remove();
       res.send();
@@ -56,55 +56,55 @@ const userController = {
       res.status(401).json(e);
     }
   },
-  addLicense: async (req, res) => {
+  async addLicense(req, res) {
     const { user, body } = req;
 
     try {
       user.license = body;
       await user.save();
       res.json(user);
-    } catch (error) {
-      res.status(400).json({ message: error.message, error: error.errors });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
     }
   },
-  getRentals: async (req, res) => {
+  async getRentals(req, res) {
     const { user } = req;
-    try {
-      const rentals = await Rental.find({ user });
-      res.json(rentals);
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
-        error: error.errors,
+
+    Rental.find({ user })
+      .populate({ path: 'user', model: 'User' })
+      .populate({ path: 'parkingOrigin', model: 'Parking' })
+      .populate({ path: 'vehicle', model: 'Vehicle' })
+      .populate({ path: 'parkingDestination', model: 'Parking' })
+      .exec((err, data) => {
+        if (err) {
+          return res.send(err);
+        }
+        data.forEach((r) => {
+          r.vehicle.parking = undefined;
+          r.vehicle.category = undefined;
+        });
+        return res.json(data);
       });
-    }
   },
-  getRental: async (req, res) => {
+  async getRental(req, res) {
     const {
       user: { _id },
     } = req;
 
-    try {
-      Rental.findOne({ user: _id, returnDate: null })
-        .populate({ path: 'user', model: 'User' })
-        .populate({ path: 'parkingOrigin', model: 'Parking' })
-        .populate({ path: 'vehicle', model: 'Vehicle' })
-        .populate({ path: 'parkingDestination', model: 'Parking' })
-        .exec((err, data) => {
-          if (err) {
-            return res.send(err);
-          }
-          const rental = data;
-          rental.vehicle.parking = undefined;
-          rental.vehicle.category = undefined;
-          return res.json(rental);
-        });
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
-        error: error.errors,
+    Rental.findOne({ user: _id, returnDate: null })
+      .populate({ path: 'user', model: 'User' })
+      .populate({ path: 'parkingOrigin', model: 'Parking' })
+      .populate({ path: 'vehicle', model: 'Vehicle' })
+      .populate({ path: 'parkingDestination', model: 'Parking' })
+      .exec((err, data) => {
+        if (err) {
+          return res.send(err);
+        }
+        const rental = data;
+        rental.vehicle.parking = undefined;
+        rental.vehicle.category = undefined;
+        return res.json(rental);
       });
-    }
   },
 };
 
