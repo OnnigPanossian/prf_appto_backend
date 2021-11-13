@@ -17,7 +17,7 @@ const categorySchema = new Schema({
       }
     },
   },
-  costPerHour: {
+  costPerMinute: {
     type: Number,
     min: 0,
     required: true,

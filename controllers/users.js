@@ -15,18 +15,16 @@ const userController = {
     }
   },
   updateUser: async (req, res) => {
-    
-    const { _id } = req.user
-    let o = Object.keys(req.body)
-    .filter((k) => req.body[k] !== null && req.body[k] !== '' && req.body[k] !== undefined)
-    .reduce((a, k) => ({ ...a, [k]: req.body[k] }), {});
-    console.log(o)
-   try {
+    const { _id } = req.user;
+    const o = Object.keys(req.user)
+      .filter((k) => req.user[k] != null)
+      .reduce((a, k) => ({ ...a, [k]: req.user[k] }), {});
+    try {
       const user = await User.updateOne({ _id }, o);
       res.json(user);
     } catch (error) {
       res.status(400).json({ message: error.message, error: error.errors });
-    } 
+    }
   },
   login: async (req, res) => {
     try {
