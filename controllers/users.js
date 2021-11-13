@@ -19,9 +19,8 @@ const userController = {
     let o = Object.keys(req.body)
       .filter((k) => req.body[k] !== null && req.body[k] !== '' && req.body[k] !== undefined)
       .reduce((a, k) => ({ ...a, [k]: req.body[k] }), {});
-    console.log(o);
     try {
-      const user = await User.updateOne({ _id }, o);
+      const user = await User.findOneAndUpdate({ _id }, o, {new: true});
       res.json(user);
     } catch (error) {
       res.status(400).json({ message: error.message, error: error.errors });
