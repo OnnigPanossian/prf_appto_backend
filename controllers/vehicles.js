@@ -156,6 +156,8 @@ const VehicleController = {
       await vehicle.save();
 
       res.json(rental);
+
+
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
