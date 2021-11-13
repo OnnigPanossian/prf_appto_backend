@@ -82,9 +82,19 @@ const userController = {
     const {
       user: { _id },
     } = req;
+
     try {
-      const rental = await Rental.findOne({ user: _id, returnDate: null });
-      res.json(rental);
+      Rental.findOne({ user: _id, returnDate: null })
+        .populate({ path: 'user', model: 'User' })
+        .populate({ path: 'parkingOrigin', model: 'Parking' })
+        .populate({ path: 'vehicle', model: 'Vehicle' })
+        .populate({ path: 'parkingDestination', model: 'Parking' })
+        .exec((err, data) => {
+          if (err) {
+            return res.send(err);
+          }
+          return res.json(data);
+        });
     } catch (error) {
       res.status(500).json({
         message: error.message,
