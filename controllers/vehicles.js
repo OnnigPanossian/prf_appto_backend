@@ -180,7 +180,7 @@ const VehicleController = {
         vehicle.rating = Number.parseFloat(finalRating).toFixed(2);
         await vehicle.save();
 
-        res.status(200);
+        res.json();
       } else {
         return res.status(400).json({ message: 'Must send a valid rating to set' });
       }
