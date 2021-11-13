@@ -171,7 +171,7 @@ const VehicleController = {
         let finalRating;
         if (vehicle.timesRated > 0) {
           vehicle.timesRated += 1;
-          finalRating = (vehicle.rating + rating) / vehicle.timesRated;
+          finalRating = (vehicle.rating + Number.parseFloat(rating)) / vehicle.timesRated;
         } else {
           vehicle.timesRated = 1;
           finalRating = rating;
