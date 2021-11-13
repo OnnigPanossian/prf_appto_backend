@@ -29,8 +29,6 @@ const parkingSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vehicle',
   }],
-}, {
-  timestamps: true,
 });
 
 parkingSchema.plugin(beautifyUnique);
