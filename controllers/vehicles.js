@@ -177,10 +177,10 @@ const VehicleController = {
           finalRating = rating;
         }
 
-        vehicle.rating = finalRating.toFixed(2);
+        vehicle.rating = Number.parseFloat(finalRating).toFixed(2);
         await vehicle.save();
 
-        res.status(200).json({ message: 'OK' });
+        res.status(200);
       } else {
         return res.status(400).json({ message: 'Must send a valid rating to set' });
       }
