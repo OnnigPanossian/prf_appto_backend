@@ -22,12 +22,12 @@ const rentalSchema = new Schema({
   returnDate: {
     type: Date,
   },
-  parkingOriginId: {
+  parkingOrigin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Parking',
     required: true,
   },
-  parkingDestinationId:
+  parkingDestination:
   {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Parking',

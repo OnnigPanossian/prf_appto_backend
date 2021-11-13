@@ -87,7 +87,7 @@ const VehicleController = {
         user: req.user._id,
         withdrawalDate: Date.now(),
         returnDate: null,
-        parkingOriginId: vehicle.parking,
+        parkingOrigin: vehicle.parking,
       });
       await rental.save();
 
@@ -147,7 +147,7 @@ const VehicleController = {
 
       rental.finalPrice = price;
       rental.returnDate = endDate;
-      rental.parkingDestinationId = idParking;
+      rental.parkingDestination = idParking;
       await rental.save();
 
       parking.vehicles.push(vehicle);
