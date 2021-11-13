@@ -1,3 +1,4 @@
+const { response } = require('express');
 const User = require('../models/user');
 const Rental = require('../models/rental');
 
@@ -16,11 +17,11 @@ const userController = {
   },
   updateUser: async (req, res) => {
     const { _id } = req.user;
-    let o = Object.keys(req.body)
+    const o = Object.keys(req.body)
       .filter((k) => req.body[k] !== null && req.body[k] !== '' && req.body[k] !== undefined)
       .reduce((a, k) => ({ ...a, [k]: req.body[k] }), {});
     try {
-      const user = await User.findOneAndUpdate({ _id }, o, {new: true});
+      const user = await User.findOneAndUpdate({ _id }, o, { new: true });
       res.json(user);
     } catch (error) {
       res.status(400).json({ message: error.message, error: error.errors });
@@ -93,7 +94,10 @@ const userController = {
           if (err) {
             return res.send(err);
           }
-          return res.json(data);
+          const rental = data;
+          rental.vehicle.parking = undefined;
+          rental.vehicle.category = undefined;
+          return res.json(rental);
         });
     } catch (error) {
       res.status(500).json({
