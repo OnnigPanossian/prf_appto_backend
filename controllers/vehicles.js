@@ -160,7 +160,7 @@ const VehicleController = {
   },
   calificateVehicule: async (req, res) => {
     const _id = req.params.id;
-    const { rating } = req.body;
+    const { rating } = req.params;
     try {
       const vehicle = await Vehicle.findById(_id);
 
