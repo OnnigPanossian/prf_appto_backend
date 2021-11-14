@@ -35,6 +35,9 @@ const rentalSchema = new Schema({
   {
     type: Number,
   },
+  paymentDate: {
+    type: Date,
+  },
 });
 
 rentalSchema.plugin(beautifyUnique);
