@@ -19,11 +19,7 @@ const getAll = async (req, res) => {
         break;
       default:
         const b = query[key].split(', ');
-        const toCompleteFilter = [];
-        for (let i = 0; i < b.length; i++) {
-          toCompleteFilter.push(b[i]);
-        }
-        filter[key] = toCompleteFilter;
+        filter[key] = b;
         break;
     }
   });
@@ -42,22 +38,28 @@ const getAll = async (req, res) => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < garages.length; i++) {
       const garage = garages[i];
-      if (garage.vehicles.length) {
+      if (Object.keys(query).length > 0) {
+        let hasVehicles = false;
         // eslint-disable-next-line no-plusplus
         if (filterCategory.hasOwnProperty('code')) {
           for (let j = 0; j < filterCategory.code.length; j++) {
-            const e = filterCategory.code[j];
-            garage.vehicles = garage.vehicles.filter((vehicle) => vehicle.category.code === e[j]);
+            hasVehicles = garage.vehicles.some((vehicle) => vehicle.category.code === filterCategory.code[j]);
+            if (hasVehicles) {
+              break;
+            }
+          }
+          if (hasVehicles) {
+            toReturn.push(garage);
           }
         }
+      } else {
+        toReturn.push(garage);
       }
-
-      toReturn.push(garage);
     }
 
     return res.status(200).json(toReturn);
   } catch (error) {
-    res.status(400).json({ message: error.message, error: error.errors });
+    res.status(400).json({ message: error.message });
   }
 };
 
