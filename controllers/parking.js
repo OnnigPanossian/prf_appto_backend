@@ -1,18 +1,22 @@
+/* eslint-disable consistent-return */
 /**
  * Dependencies
  */
 const Parking = require('../models/parking');
 const Vehicle = require('../models/vehicle');
 
-const getAll = async (_, res) =>
-  Parking.find()
-    .then((garages) => {
-      if (!garages.length) {
-        return res.status(404).json({ message: 'Garages Not Found' });
-      }
-      return res.status(200).json(garages);
-    })
-    .catch((error) => res.status(400).json({ message: error.message, error: error.errors }));
+const getAll = async (req, res) => {
+  const { query } = req;
+  try {
+    const garages = await Parking.find().populate({
+      path: 'vehicles',
+      match: query,
+    });
+    return res.status(201).json(garages);
+  } catch (error) {
+    res.status(400).json({ message: error.message, error: error.errors });
+  }
+};
 
 const createParking = async (req, res) => {
   const { body } = req;
