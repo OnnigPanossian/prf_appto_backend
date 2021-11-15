@@ -7,12 +7,58 @@ const Vehicle = require('../models/vehicle');
 
 const getAll = async (req, res) => {
   const { query } = req;
+
+  const filterCategory = {};
+  const filter = {};
+  Object.keys(query).map(async (key) => {
+    switch (key) {
+      case 'category':
+        const a = query[key].split(',');
+        const toComplete = [];
+        for (let i = 0; i < a.length; i++) {
+          toComplete.push(a[i]);
+        }
+        filterCategory['code'] = toComplete;
+        break;
+      default:
+        const b = query[key].split(', ');
+        const toCompleteFilter = [];
+        for (let i = 0; i < b.length; i++) {
+          toCompleteFilter.push(b[i]);
+        }
+        filter[key] = toCompleteFilter;
+        break;
+    }
+  });
+
   try {
     const garages = await Parking.find().populate({
       path: 'vehicles',
-      match: query,
+      populate: {
+        path: 'category',
+      },
+      match: filter,
     });
-    return res.status(201).json(garages);
+
+    const toReturn = {};
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < garages.length; i++) {
+      let garage = garages[i];
+      if (garage.vehicles.length) {
+        // eslint-disable-next-line no-plusplus
+        if (filterCategory.hasOwnProperty('code')) {
+          for (let j = 0; j < filterCategory.code.length; j++) {
+            const e = filterCategory.code[j];
+            garage.vehicles = garage.vehicles.filter((vehicle) => vehicle.category.code === e[j]);
+          }
+        }
+      }
+
+      toReturn[i] = garage;
+    }
+
+    return res.status(200).json(toReturn);
   } catch (error) {
     res.status(400).json({ message: error.message, error: error.errors });
   }
