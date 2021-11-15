@@ -13,12 +13,9 @@ const getAll = async (req, res) => {
   Object.keys(query).map(async (key) => {
     switch (key) {
       case 'category':
+        query[key] = decodeURI(query[key]);
         const a = query[key].split(',');
-        const toComplete = [];
-        for (let i = 0; i < a.length; i++) {
-          toComplete.push(a[i]);
-        }
-        filterCategory['code'] = toComplete;
+        filterCategory.code = a;
         break;
       default:
         const b = query[key].split(', ');
@@ -44,7 +41,7 @@ const getAll = async (req, res) => {
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < garages.length; i++) {
-      let garage = garages[i];
+      const garage = garages[i];
       if (garage.vehicles.length) {
         // eslint-disable-next-line no-plusplus
         if (filterCategory.hasOwnProperty('code')) {
