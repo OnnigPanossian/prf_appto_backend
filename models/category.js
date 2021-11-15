@@ -27,6 +27,12 @@ const categorySchema = new Schema({
       }
     },
   },
+  doors: {
+    type: Number,
+    min: 4,
+    max: 5,
+    default: 4,
+  },
   capacity: {
     type: Number,
     min: 2,

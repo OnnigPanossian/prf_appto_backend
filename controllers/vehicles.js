@@ -87,7 +87,7 @@ const VehicleController = {
         user: req.user._id,
         withdrawalDate: Date.now(),
         returnDate: null,
-        parkingOriginId: vehicle.parking,
+        parkingOrigin: vehicle.parking,
       });
       await rental.save();
 
@@ -99,7 +99,7 @@ const VehicleController = {
       vehicle.parking = null;
       await vehicle.save();
 
-      res.json({ message: rental });
+      res.json(rental);
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
@@ -147,21 +147,24 @@ const VehicleController = {
 
       rental.finalPrice = price;
       rental.returnDate = endDate;
-      rental.parkingDestinationId = idParking;
+      rental.parkingDestination = idParking;
       await rental.save();
 
       parking.vehicles.push(vehicle);
       await parking.save();
       vehicle.parking = idParking;
       await vehicle.save();
-      res.json({ message: rental });
+
+      res.json(rental);
+
+
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
   },
   calificateVehicule: async (req, res) => {
     const _id = req.params.id;
-    const { rating } = req.body;
+    const { rating } = req.params;
     try {
       const vehicle = await Vehicle.findById(_id);
 
@@ -172,16 +175,16 @@ const VehicleController = {
         let finalRating;
         if (vehicle.timesRated > 0) {
           vehicle.timesRated += 1;
-          finalRating = (vehicle.rating + rating) / vehicle.timesRated;
+          finalRating = (vehicle.rating + Number.parseFloat(rating)) / vehicle.timesRated;
         } else {
           vehicle.timesRated = 1;
           finalRating = rating;
         }
 
-        vehicle.rating = finalRating.toFixed(2);
+        vehicle.rating = Number.parseFloat(finalRating).toFixed(2);
         await vehicle.save();
 
-        res.status(200).json({ message: 'OK' });
+        res.json();
       } else {
         return res.status(400).json({ message: 'Must send a valid rating to set' });
       }

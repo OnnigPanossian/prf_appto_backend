@@ -51,12 +51,12 @@ const vehicleSchema = new Schema({
     type: Number,
     min: 0,
     max: 5,
-    default: 0,
+    default: 5,
   },
   timesRated: {
     type: Number,
-    min: 0,
-    default: 0,
+    min: 1,
+    default: 1,
   },
 }, {
   timestamps: true,
