@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const User = require('../models/user');
 const Rental = require('../models/rental');
+const pricesUtil = require('../utils/pricesUtil');
 
 const userController = {
   async createUser(req, res) {
@@ -101,6 +102,7 @@ const userController = {
           return res.send(err);
         }
         const rental = data;
+        rental.finalPrice = rental.finalPrice ? rental.finalPrice : pricesUtil.calculatePrice(rental.vehicle.category, rental.withdrawalDate);
         rental.vehicle.parking = undefined;
         rental.vehicle.category = undefined;
         return res.json(rental);

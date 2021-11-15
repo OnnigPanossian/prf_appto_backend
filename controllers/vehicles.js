@@ -7,6 +7,7 @@ const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
 const Parking = require('../models/parking');
 const Category = require('../models/category');
+const pricesUtil = require('../utils/pricesUtil');
 
 const VehicleController = {
   createVehicle: async (req, res) => {
@@ -104,7 +105,6 @@ const VehicleController = {
       res.status(500).json({ message: e.message });
     }
   },
-
   returnVehicle: async (req, res) => {
     const {
       params: { id: _id, idParking },
@@ -124,9 +124,7 @@ const VehicleController = {
       }
       const rental = await Rental.findOne({ vehicle: _id, returnDate: null });
 
-      const today = new Date(rental.withdrawalDate);
-      const endDate = new Date();
-      const minutes = parseInt((Math.abs(endDate.getTime() - today.getTime()) / (1000 * 60)) % 60, 10);
+      const bookDate = new Date(rental.withdrawalDate);
 
       if (!vehicle.category) {
         return res.status(404).json({ message: 'Vehicle without category, set a category to vehicle and try again' });
@@ -142,11 +140,8 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Already In A Parking' });
       }
 
-      const cost = category.costPerMinute;
-      const price = minutes * Number(cost);
-
-      rental.finalPrice = price;
-      rental.returnDate = endDate;
+      rental.finalPrice = pricesUtil.calculatePrice(category, bookDate);
+      rental.returnDate = new Date();
       rental.parkingDestination = idParking;
       await rental.save();
 
