@@ -7,7 +7,7 @@ const Vehicle = require('../models/vehicle');
 const Rental = require('../models/rental');
 const Parking = require('../models/parking');
 const Category = require('../models/category');
-const pricesUtil = require('../utils/pricesUtil');
+const calculatePrice = require('../utils/calculatePrice');
 
 const VehicleController = {
   createVehicle: async (req, res) => {
@@ -140,7 +140,7 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Already In A Parking' });
       }
 
-      rental.finalPrice = pricesUtil.calculatePrice(category, bookDate);
+      rental.finalPrice = calculatePrice(category, bookDate);
       rental.returnDate = new Date();
       rental.parkingDestination = idParking;
       await rental.save();
