@@ -2,6 +2,7 @@
 const User = require('../models/user');
 const Rental = require('../models/rental');
 const calculatePrice = require('../utils/calculatePrice');
+const Category = require('../models/category');
 
 const userController = {
   async createUser(req, res) {
@@ -97,12 +98,13 @@ const userController = {
       .populate({ path: 'parkingOrigin', model: 'Parking' })
       .populate({ path: 'vehicle', model: 'Vehicle' })
       .populate({ path: 'parkingDestination', model: 'Parking' })
-      .exec((err, data) => {
+      .exec(async (err, data) => {
         if (err) {
           return res.send(err);
         }
+        const category = await Category.findOne({ id: data.vehicle.category });
         const rental = data;
-        rental.finalPrice = rental.finalPrice ? rental.finalPrice : calculatePrice(rental.vehicle.category, rental.withdrawalDate);
+        rental.finalPrice = data.finalPrice ? data.finalPrice : calculatePrice(category, data.withdrawalDate);
         rental.vehicle.parking = undefined;
         rental.vehicle.category = undefined;
         return res.json(rental);

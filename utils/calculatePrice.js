@@ -1,7 +1,8 @@
-const calculatePrice = (category, bookDate) => {
-  const diffTime = Math.abs(new Date().getTime() - bookDate.getTime());
-  const minutes = parseInt((diffTime / (1000 * 60)) % 60, 10);
-  return minutes * Number(category.costPerMinute);
+const calculatePrice = (category, withdrawalDate) => {
+  const diff = Math.abs(new Date() - withdrawalDate);
+  const minutes = Math.floor((diff / 1000) / 60);
+  const cost = category.costPerMinute;
+  return minutes * Number(cost);
 };
 
 module.exports = calculatePrice;
