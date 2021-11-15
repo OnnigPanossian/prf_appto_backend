@@ -140,7 +140,7 @@ const VehicleController = {
         return res.status(404).json({ message: 'Vehicle Already In A Parking' });
       }
 
-      rental.finalPrice = pricesUtil.calculatePrice(category, bookDate);
+      rental.finalPrice = rental.finalPrice ? rental.finalPrice : pricesUtil.calculatePrice(rental.vehicle.category, rental.withdrawalDate);
       rental.returnDate = new Date();
       rental.parkingDestination = idParking;
       await rental.save();
