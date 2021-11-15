@@ -40,7 +40,7 @@ const getAll = async (req, res) => {
       match: filter,
     });
 
-    const toReturn = {};
+    const toReturn = [];
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < garages.length; i++) {
@@ -55,7 +55,7 @@ const getAll = async (req, res) => {
         }
       }
 
-      toReturn[i] = garage;
+      toReturn.push(garage);
     }
 
     return res.status(200).json(toReturn);
