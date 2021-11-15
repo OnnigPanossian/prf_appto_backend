@@ -44,8 +44,6 @@ const categorySchema = new Schema({
     min: 0,
     default: 0,
   },
-}, {
-  timestamps: true,
 });
 
 categorySchema.plugin(beautifyUnique);

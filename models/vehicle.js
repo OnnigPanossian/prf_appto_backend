@@ -58,8 +58,6 @@ const vehicleSchema = new Schema({
     min: 1,
     default: 1,
   },
-}, {
-  timestamps: true,
 });
 
 vehicleSchema.plugin(beautifyUnique);
